@@ -25,7 +25,6 @@
         <scala.version>2.12.2</scala.version>
         <HikariCP.version>2.7.1</HikariCP.version>
         <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
-        <docker.registry>docker.tradeshift.net</docker.registry>
     </properties>
 
     <!-- Compile -->
@@ -165,17 +164,6 @@
                         <goals>
                             <goal>build</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>docker-push</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                        <configuration>
-                            <pushRegistry>${docker.registry}</pushRegistry>
-                            <retries>2</retries>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
