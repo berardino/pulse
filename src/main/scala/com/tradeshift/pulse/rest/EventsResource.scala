@@ -51,27 +51,6 @@ class EventOutputSSEActor(eventOutput: EventOutput, mapper: ObjectMapper, remote
 @Singleton
 class EventsResource @Inject()(akka: Akka, mapper: ObjectMapper) {
 
-  import org.glassfish.jersey.media.sse.SseBroadcaster
-
-  private val broadcaster = new SseBroadcaster
-
-  new Thread() {
-    override def run(): Unit = {
-      try {
-        while (true) {
-          val event = Event(Geo.randomCountry(), Geo.randomCountry(), Math.abs(Random.nextInt(1000000)))
-          val payload = mapper.writeValueAsString(event)
-          val sse = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(classOf[String], payload).build
-          broadcaster.broadcast(sse)
-          Thread.sleep(2000)
-        }
-      } catch {
-        case e@(_: InterruptedException) =>
-          e.printStackTrace
-      }
-    }
-  }.start()
-
   @GET
   @Produces(Array(SseFeature.SERVER_SENT_EVENTS))
   def getEvents(@Context request: HttpServletRequest): EventOutput = {
