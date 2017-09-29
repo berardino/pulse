@@ -74,21 +74,17 @@ class EventOutputSSEActor(eventOutput: EventOutput,
           lastSeenEvent = Some(event)
           val payload = mapper.writeValueAsString(event)
           val sse = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(classOf[String], payload).build
-          eventOutput.write(sse)
+          try {
+            eventOutput.write(sse)
+            context.system.scheduler.scheduleOnce(2 seconds, self, Tick)
+          } catch {
+            case ex: EofException => {
+              log.info("Unable to write to {}, shutting down {}", remoteAddr, self.path)
+              context.stop(self)
+            }
+          }
         }
       })
-
-      //val event = Event(UUID.randomUUID(), Geo.randomCountry(), Geo.randomCountry(), Math.abs(Random.nextInt(1000000)))
-      //val sse = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(classOf[String], payload).build
-      try {
-        //eventOutput.write(sse)
-        context.system.scheduler.scheduleOnce(2 seconds, self, Tick)
-      } catch {
-        case ex: EofException => {
-          log.info("Unable to write to {}, shutting down {}", remoteAddr, self.path)
-          context.stop(self)
-        }
-      }
     }
   }
 }
