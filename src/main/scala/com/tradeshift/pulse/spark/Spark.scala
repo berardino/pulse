@@ -2,7 +2,7 @@ package com.tradeshift.pulse.spark
 
 import java.sql.Timestamp
 import java.time.Instant
-import java.util.{Properties, UUID}
+import java.util.Properties
 import javax.annotation.{PostConstruct, PreDestroy}
 
 import com.tradeshift.pulse.geo.Geo
@@ -53,7 +53,7 @@ class Spark(val env: Environment) {
 
   val seedRdd = spark.sparkContext.parallelize(Seq.fill(partitions)(recordsPerPartition), partitions)
   val randomEvents = seedRdd.flatMap(records => Seq.fill(records)(
-    AuditEvent(Geo.randomCountryIso, Geo.randomCountryIso, Time.randomTime))).toDS()
+    AuditEvent(Geo.randomCountrySourceIso(), Geo.randomCountryDestIso(), Time.randomTime))).toDS()
 
 
   val toWindowStart = udf { (window: GenericRowWithSchema) =>

@@ -1,5 +1,6 @@
 package com.tradeshift.pulse.rest
 
+import java.io.IOException
 import java.util.UUID
 import java.util.function.Consumer
 import javax.inject.{Inject, Singleton}
@@ -77,10 +78,14 @@ class EventOutputSSEActor(eventOutput: EventOutput,
           val payload = mapper.writeValueAsString(event)
           val sse = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(classOf[String], payload).build
           try {
+            Thread.sleep(200)
             eventOutput.write(sse)
-            Thread.sleep(500)
           } catch {
             case ex: EofException => {
+              log.info("Unable to write to {}, shutting down {}", remoteAddr, self.path)
+              context.stop(self)
+            }
+            case ex: IOException => {
               log.info("Unable to write to {}, shutting down {}", remoteAddr, self.path)
               context.stop(self)
             }

@@ -24,7 +24,8 @@ object Geo {
   }).toMap
   reader.close()
 
-  val locales = Locale.getISOCountries
+  val locales_source = Random.shuffle(Array(Locale.getISOCountries: _*).toSeq)
+  val locales_desc = Random.shuffle(Array(Locale.getISOCountries: _*).toSeq).toBuffer
 
 
   def lookup(iso: String): Option[Country] = map.get(iso)
@@ -33,11 +34,11 @@ object Geo {
     lookup(iso).getOrElse(lookup("US").get)
   }
 
-  def randomCountryIso(): String = {
-    locales(Random.nextInt(20))
+  def randomCountrySourceIso(): String = {
+    locales_source(Random.nextInt(locales_source.length))
   }
 
-  def randomCountry(): Country = {
-    toCountry(randomCountryIso())
+  def randomCountryDestIso(): String = {
+    locales_desc(Random.nextInt(locales_desc.length))
   }
 }
