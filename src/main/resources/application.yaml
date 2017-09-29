@@ -3,3 +3,8 @@ server:
   port: 8080
 
 spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://127.0.0.1:6432/pulse
+    username: pulse
+    password:

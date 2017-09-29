@@ -25,6 +25,7 @@
         <scala.version>2.11.8</scala.version>
         <HikariCP.version>2.7.1</HikariCP.version>
         <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
+        <spring-retry.version>1.2.1.RELEASE</spring-retry.version>
     </properties>
 
     <!-- Compile -->
@@ -78,6 +79,11 @@
                 </exclusion>
 
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>${spring-retry.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
