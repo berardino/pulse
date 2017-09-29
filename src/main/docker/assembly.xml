@@ -7,14 +7,14 @@
       <includes>
         <include>com.tradeshift.pulse:tradeshift-pulse</include>
       </includes>
-      <outputDirectory>/opt/tradeshift/tradeshift-pulse/bin</outputDirectory>
-      <outputFileNameMapping>tradeshift-pulse.jar</outputFileNameMapping>
+      <outputDirectory>/opt/pulse/bin</outputDirectory>
+      <outputFileNameMapping>pulse.jar</outputFileNameMapping>
     </dependencySet>
     <dependencySet>
       <includes>
         <include>!com.tradeshift.pulse:tradeshift-pulse</include>
       </includes>
-      <outputDirectory>/opt/tradeshift/tradeshift-pulse/lib</outputDirectory>
+      <outputDirectory>/opt/pulse/lib</outputDirectory>
     </dependencySet>
   </dependencySets>
 </assembly>
