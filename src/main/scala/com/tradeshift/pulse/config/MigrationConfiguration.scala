@@ -1,16 +1,16 @@
-package com.tradeshift.users.service.config
+package com.tradeshift.pulse.config
 
 import java.net.{ConnectException, SocketTimeoutException}
 
 import org.flywaydb.core.Flyway
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration
 import org.springframework.boot.autoconfigure.flyway.{FlywayAutoConfiguration, FlywayMigrationStrategy}
-import org.springframework.context.annotation.{Bean, Configuration, Import}
-import org.springframework.retry.{RetryCallback, RetryContext}
+import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.retry.backoff.ExponentialBackOffPolicy
 import org.springframework.retry.policy.SimpleRetryPolicy
 import org.springframework.retry.policy.SimpleRetryPolicy.DEFAULT_MAX_ATTEMPTS
 import org.springframework.retry.support.RetryTemplate
+import org.springframework.retry.{RetryCallback, RetryContext}
 
 import scala.collection.JavaConversions
 
@@ -47,3 +47,5 @@ class MigrationConfiguration {
   }
 
 }
+
+
