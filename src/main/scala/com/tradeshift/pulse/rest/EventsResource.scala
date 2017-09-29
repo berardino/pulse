@@ -30,6 +30,8 @@ class EventOutputSSEActor(eventOutput: EventOutput,
 
   context.system.scheduler.scheduleOnce(2 seconds, self, Tick)
 
+  log.info("Created connection from {}", remoteAddr)
+
   var lastSeenEvent: Option[Event] = None
 
   def toEvent(t: Record): Event = {
@@ -65,7 +67,7 @@ class EventOutputSSEActor(eventOutput: EventOutput,
           """select id::uuid as id_uuid,
             |source, source_lat, source_lon,
             |dest, dest_lat, dest_lon, volume from aggregated_events
-            |where id::uuid > ? order by start_at asc limit 50""".stripMargin, lastSeenEvent.get.id)
+            |where id::uuid > ?::uuid order by start_at asc limit 50""".stripMargin, lastSeenEvent.get.id)
       }
 
       query.forEach(new Consumer[Record] {
@@ -76,7 +78,7 @@ class EventOutputSSEActor(eventOutput: EventOutput,
           val sse = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(classOf[String], payload).build
           try {
             eventOutput.write(sse)
-            context.system.scheduler.scheduleOnce(2 seconds, self, Tick)
+            Thread.sleep(500)
           } catch {
             case ex: EofException => {
               log.info("Unable to write to {}, shutting down {}", remoteAddr, self.path)
@@ -85,6 +87,8 @@ class EventOutputSSEActor(eventOutput: EventOutput,
           }
         }
       })
+
+      context.system.scheduler.scheduleOnce(2 seconds, self, Tick)
     }
   }
 }
