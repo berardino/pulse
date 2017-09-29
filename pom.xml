@@ -30,11 +30,16 @@
         <commons-compiler.version>2.7.8</commons-compiler.version>
         <spark-core_2.11.version>2.2.0</spark-core_2.11.version>
         <akka-actor_2.11.version>2.5.4</akka-actor_2.11.version>
+        <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
     </properties>
 
     <!-- Compile -->
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor_2.11 -->
+        <dependency>
+            <groupId>com.fasterxml.uuid</groupId>
+            <artifactId>java-uuid-generator</artifactId>
+            <version>${java-uuid-generator.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_2.11</artifactId>

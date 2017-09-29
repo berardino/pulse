@@ -2,10 +2,11 @@ package com.tradeshift.pulse.spark
 
 import java.sql.Timestamp
 import java.time.Instant
-import java.util.Properties
+import java.util.{Properties, UUID}
 import javax.annotation.{PostConstruct, PreDestroy}
 
 import com.tradeshift.pulse.geo.Geo
+import com.tradeshift.pulse.lang.UUIDs
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.springframework.core.env.Environment
@@ -15,7 +16,8 @@ import scala.util.Random
 
 case class AuditEvent(source: String, dest: String, timestamp: Timestamp)
 
-case class AggregateEvent(source: String,
+case class AggregateEvent(id: String, //UUID
+                          source: String,
                           source_lat: String,
                           source_lon: String,
                           dest: String,
@@ -78,6 +80,7 @@ class Spark(val env: Environment) {
         val start_at = window.getTimestamp(0)
         val end_at = window.getTimestamp(1)
         AggregateEvent(
+          UUIDs.timeUUID().toString,
           source,
           source_country.lat,
           source_country.lon,
